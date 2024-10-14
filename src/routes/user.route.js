@@ -10,13 +10,13 @@ import {
   updateBio,
   logout,
   refreshToken,
-  getPlaylistByUser,
 } from "../controllers/user.controller.js";
+import { upload } from "../middlewares/multer.upload.js";
 
 const router = Router();
 
-router.route("/signup").post(register);
-router.route("/login").post(login);
+router.route("/auth/signup").post(upload.single("avatar"), register);
+router.route("/auth/login").post(login);
 router.route("/").get(getAllUser);
 router.route("/:userId").get(getSingleUser);
 router.route("/profile/:userId").put(updateProfile);

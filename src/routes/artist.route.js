@@ -16,7 +16,7 @@ router.route("/").get(getAllArtist);
 router.route("/:artistId").get(getSingleArtist);
 router.route("/:artistId").put(updateArtist);
 router.route("/:artistId").delete(deleteArtist);
-route.route("/:artistId/profile-avatar").post(uploadArtistAvatar);
+router.route("/:artistId/profile-avatar").post(uploadArtistAvatar);
 router.route("/:artistId/songs").get(getSongByArtist);
 
 export default router;

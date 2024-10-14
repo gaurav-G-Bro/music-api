@@ -16,7 +16,7 @@ router.route("/").get(getAllPlaylist);
 router.route("/:playlistId").get(getSinglePlaylist);
 router.route("/:playlistId").put(updatePlaylist);
 router.route("/:playlistId").delete(deletePlaylist);
-route.route("/:playlistId/visibility").patch(changePlaylistVisibility);
+router.route("/:playlistId/visibility").patch(changePlaylistVisibility);
 router.route("/:userId/playlist").get(getPlaylistByUser);
 
 export default router;

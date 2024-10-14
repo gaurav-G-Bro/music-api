@@ -1,4 +1,4 @@
-import { CuratePlaylist } from "../models/curated_playlist.model.js";
+import { CuratedPlaylist } from "../models/curated_playlist.model.js";
 import { asyncHandler } from "../utils/AsyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";

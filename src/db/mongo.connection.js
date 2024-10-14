@@ -8,7 +8,7 @@ const CONNECT_DB = async () => {
     );
     console.log("database connected on host: ", connection.connection.host);
   } catch (error) {
-    throw new ApiError(400, "Failed to connect database", error.message);
+    console.log(`failed to connect with database: ${error}`);
   }
 };
 

@@ -12,7 +12,7 @@ const router = Router();
 router.route("/").post(createCuratedPlaylist);
 router.route("/").get(getAllCuratedPlaylist);
 router.route("/:curatedPlaylistId").get(getSingleCuratedPlaylist);
-router.route("/:curatedPlaylistId").put(updatePupdateCuratedPlaylistrofile);
+router.route("/:curatedPlaylistId").put(updateCuratedPlaylist);
 router.route("/:curatedPlaylistId").delete(deleteCuratedPlaylist);
 
 export default router;

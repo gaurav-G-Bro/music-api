@@ -17,6 +17,6 @@ router.route("/:songId").get(getSingleSong);
 router.route("/:songId").put(updateSong);
 router.route("/:songId").delete(deleteSong);
 router.route("/:songId/upload-song").post(uploadSong);
-route.route("/:songId/cover-image").post(uploadSongCoverImage);
+router.route("/:songId/cover-image").post(uploadSongCoverImage);
 
 export default router;
