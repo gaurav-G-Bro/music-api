@@ -144,6 +144,17 @@ const login = asyncHandler(async (req, res) => {
 
 const getAllUser = asyncHandler(async (req, res) => {
   try {
+    if (!req.user) throw new ApiError(401, "user not logged in");
+    const existingUser = await User.findById(req.user._id);
+    if (!existingUser)
+      throw new ApiError(404, "user not available in the database");
+
+    const users = await User.find({}).select("-password");
+    if (!users) throw new ApiError(500, "No users found");
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, "users fetched successfully", users));
   } catch (error) {
     throw new ApiError(error.statusCode, error.message);
   }
