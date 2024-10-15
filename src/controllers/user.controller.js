@@ -90,7 +90,53 @@ const register = asyncHandler(async (req, res) => {
 });
 
 const login = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
   try {
+    if (!email || email.trim() === "")
+      throw new ApiError(400, "email or username is required");
+
+    if (!password || password.trim() === "")
+      throw new ApiError(400, "password is required");
+
+    const existedUser = await User.findOne({
+      $or: [{ email: email.toLowerCase() }, { username: email.toLowerCase() }],
+    });
+
+    if (!existedUser) throw new ApiError(404, "user not registered");
+
+    let passwordStatus;
+    if (existedUser) {
+      passwordStatus = await existedUser.isPasswordValid(password);
+      if (!passwordStatus) throw new ApiError(401, "Invalid login credentials");
+    }
+
+    let accessToken, refreshToken;
+    if (passwordStatus) {
+      accessToken = await existedUser.generateAccessToken(existedUser._id);
+      refreshToken = await existedUser.generateRefreshToken(existedUser._id);
+
+      if (!accessToken || !refreshToken)
+        throw new ApiError(
+          500,
+          "something went wrong while generating the access and refresh token"
+        );
+
+      const existingUser = await User.findById(existedUser._id).select(
+        "-password"
+      );
+
+      return res
+        .status(200)
+        .cookie("accessToken", accessToken)
+        .cookie("refreshToken", refreshToken)
+        .json(
+          new ApiResponse(200, "user logged in successfully", {
+            existingUser,
+            accessToken,
+            refreshToken,
+          })
+        );
+    }
   } catch (error) {
     throw new ApiError(error.statusCode, error.message);
   }
