@@ -161,7 +161,22 @@ const getAllUser = asyncHandler(async (req, res) => {
 });
 
 const getSingleUser = asyncHandler(async (req, res) => {
+  const user = req.user;
+  const { userId } = req.params;
   try {
+    if (!user) throw new ApiError(401, "user not logged in");
+    if (!userId || userId.trim() === "")
+      throw new ApiError(400, "user id is required");
+
+    if (userId.toString().length !== user._id.toString().length)
+      throw new ApiError(400, "Invalid user id");
+
+    const existedUser = await User.findById(userId).select("-password");
+    if (!existedUser) throw new ApiError(404, "No user not found");
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, "user fetched successfully", existedUser));
   } catch (error) {
     throw new ApiError(error.statusCode, error.message);
   }
